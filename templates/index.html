@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>News</title>
+    
+    <style>
+        .news-item {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>News</h1>
+    {% for item in data_list %}
+    <div class="news-item">
+      <a href="{{ item.link }}" style="text-decoration: none;">{{ item.link }}</a>
+
+        {{ item.news|safe }}
+    </div>
+    {% endfor %}
+</body>
+</html>
+
