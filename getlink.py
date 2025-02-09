@@ -1,9 +1,14 @@
 from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 
 def scrape_website(url, total_count_limit=40):
     firefox_options = webdriver.FirefoxOptions()
-    firefox_options.headless = True
+    # Remove headless mode for debugging
+    # firefox_options.headless = True
 
     href_text_lengths = {}
     links_list = []
@@ -12,10 +17,15 @@ def scrape_website(url, total_count_limit=40):
     while next_url:
         print(f'Total Count: {len(links_list)}')
 
-        driver = webdriver.Firefox(options=firefox_options)
-        driver.get(next_url)
-        page_source = driver.page_source
-        driver.quit()
+        with webdriver.Firefox(options=firefox_options) as driver:
+            driver.get(next_url)
+
+            # Wait for the news list to load
+            WebDriverWait(driver, 10).until(
+                EC.presence_of_element_located((By.CLASS_NAME, "newslist"))
+            )
+
+            page_source = driver.page_source
 
         soup = BeautifulSoup(page_source, 'html.parser')
 
@@ -44,7 +54,7 @@ def scrape_website(url, total_count_limit=40):
         next_link = soup.find('a', string='Next »')
         if next_link:
             next_href = next_link.get('href')
-            next_url = url + next_href
+            next_url = urljoin(url, next_href)  # Ensure absolute URL
         else:
             next_url = None
 

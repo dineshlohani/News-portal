@@ -1,25 +1,231 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>News</title>
-    
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/templates/favicon.ico" type="image/x-icon" />
+
+    <link rel="manifest" href="/templates/site.webmanifest" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Stay updated with the latest news of today. Read top stories and breaking news now."
+    />
+    <meta
+      name="keywords"
+      content="latest news, breaking news, today's news, top headlines"
+    />
+    <meta name="author" content="Your Website Name" />
+
+    <!-- Open Graph for Social Media -->
+    <meta property="og:title" content="Today's News - Latest Updates" />
+    <meta
+      property="og:description"
+      content="Get the latest news and updates from around the world."
+    />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yourwebsite.com/todays-news" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Today's News - Latest Updates" />
+    <meta
+      name="twitter:description"
+      content="Read the top headlines and latest stories."
+    />
+
+    <title>Today's News - Latest Headlines & Updates</title>
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CSS Styling -->
     <style>
-        .news-item {
-            border: 1px solid #ccc;
-            padding: 10px;
-            margin-bottom: 20px;
+      body {
+        font-family: "Poppins", sans-serif;
+        background-color: #f5f5f5;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+      }
+
+      h1 {
+        background-color: #0073e6;
+        color: white;
+        padding: 20px;
+        margin: 0;
+        font-size: 24px;
+      }
+      .news-header {
+        background: rgb(82, 82, 236);
+        color: white;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 10px 0;
+        white-space: nowrap;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .news-text {
+        display: inline-block;
+        position: relative;
+        animation: marquee 10s linear infinite;
+      }
+
+      @keyframes marquee {
+        from {
+          transform: translateX(100%);
         }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+
+      .date-time {
+        font-size: 18px;
+        margin-top: 10px;
+        color: #333;
+      }
+
+      .news-container {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 15px;
+      }
+
+      .news-item {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 18px;
+        margin-bottom: 20px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        text-align: left;
+      }
+
+      .news-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+
+      .news-item a {
+        text-decoration: none;
+        color: #0073e6;
+        font-weight: 600;
+        font-size: 10px;
+        display: block;
+        margin-bottom: 8px;
+        word-break: break-word;
+      }
+
+      .news-item a:hover {
+        color: #005bb5;
+      }
+
+      .news-content {
+        font-size: 16px;
+        color: #333;
+        line-height: 1.6;
+        word-wrap: break-word;
+      }
+
+      /* Responsive Image */
+      .news-item img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        display: block;
+        margin: 10px 0;
+        object-fit: cover;
+      }
+
+      /* Limit Image Size */
+      .news-image-small {
+        max-width: 250px;
+        height: auto;
+      }
+
+      /* Responsive Styling */
+      @media (max-width: 768px) {
+        h1 {
+          font-size: 22px;
+          padding: 15px;
+        }
+        .news-container {
+          width: 90%;
+          padding: 10px;
+        }
+        .news-item {
+          padding: 15px;
+        }
+        .news-item a {
+          font-size: 16px;
+        }
+        .news-content {
+          font-size: 14px;
+        }
+        .news-image-small {
+          max-width: 180px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 20px;
+          padding: 12px;
+        }
+        .news-container {
+          width: 95%;
+        }
+        .news-item a {
+          font-size: 10px;
+        }
+        .news-item a {
+          font-size: 15px;
+        }
+        .news-content {
+          font-size: 13px;
+        }
+        .news-image-small {
+          max-width: 120px;
+        }
+      }
     </style>
-</head>
-<body>
-    <h1>News</h1>
-    {% for item in data_list %}
-    <div class="news-item">
-      <a href="{{ item.link }}" style="text-decoration: none;">{{ item.link }}</a>
-
-        {{ item.news|safe }}
+  </head>
+  <body>
+    <div class="news-header">
+      <span class="news-text">Today's News</span>
     </div>
-    {% endfor %}
-</body>
-</html>
 
+    <div class="date-time" id="dateTime"></div>
+
+    <div class="news-container">
+      {% for item in data_list %}
+      <div class="news-item">
+        <a href="{{ item.link }}" target="_blank">{{ item.link }}</a>
+        {% if item.image %}
+        <img src="{{ item.image }}" alt="News Image" class="news-image-small" />
+        {% endif %}
+        <div class="news-content">{{ item.news|safe }}</div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <script>
+      function updateDateTime() {
+        const now = new Date();
+        const dayOfWeek = now.toLocaleString("en-US", { weekday: "long" }); // Get the full name of the day
+        const formattedDateTime = `${dayOfWeek}, ${now.toLocaleString()}`; // Combine the day and the date
+        document.getElementById("dateTime").innerText = formattedDateTime;
+      }
+
+      updateDateTime();
+      setInterval(updateDateTime, 1000);
+    </script>
+  </body>
+</html>
