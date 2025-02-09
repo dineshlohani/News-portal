@@ -249,42 +249,6 @@
     </div>
 
     <script>
-      let isNepali = false; // Default language is English
-
-      function toggleLanguage() {
-        isNepali = !isNepali;
-        const newsItems = document.querySelectorAll(".news-content");
-
-        newsItems.forEach((item) => {
-          const newsContent = item.innerHTML;
-          if (isNepali) {
-            item.innerHTML = convertToNepali(newsContent); // Convert content to Nepali
-          } else {
-            item.innerHTML = newsContent; // Revert back to English
-          }
-        });
-
-        document.querySelector(".language-toggle span:first-child").innerText =
-          isNepali ? "नेपाली" : "English";
-        document.querySelector(".language-toggle span:last-child").innerText =
-          isNepali ? "English" : "नेपाली";
-      }
-
-      function convertToNepali(englishText) {
-        // A simple conversion logic (you can use a library for more robust conversion)
-        const englishToNepali = {
-          "Latest news": "ताजातरीन समाचार",
-          "Breaking news": "तत्काल समाचार",
-          "Top headlines": "शीर्ष समाचार",
-          // Add more conversions here
-        };
-
-        return englishText.replace(
-          /Latest news|Breaking news|Top headlines/g,
-          (match) => englishToNepali[match] || match
-        );
-      }
-
       function updateDateTime() {
         const now = new Date();
         const dayOfWeek = now.toLocaleString("en-US", { weekday: "long" });
